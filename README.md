@@ -1,0 +1,2 @@
+# ircbot
+basic irc bot
