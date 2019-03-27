@@ -1,0 +1,40 @@
+{
+  "server": "chat.freenode.net",
+  "port": 6667,
+  "channel": "",
+  "bot_nick": "anna",
+  "bot_admin": "hunter1",
+  "logging": {
+    "version": 1,
+    "formatters": {
+      "default": {
+        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        "datefmt": "%Y:%m:%d %H:%M:%S"
+      }
+    },
+    "handlers": {
+      "console": {
+        "class": "logging.StreamHandler",
+        "formatter": "default",
+        "stream": "ext://sys.stdout"
+      },
+      "file": {
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": "ircstarr.log",
+        "formatter": "default",
+        "maxBytes": 3000000,
+        "backupCount": 3
+      }
+    },
+    "loggers":{
+      "ircstarr": {
+        "handlers": ["console", "file"],
+        "level": "INFO"
+      },
+      "test": {
+        "handlers": ["console"],
+        "level": "DEBUG"
+      }
+    }
+  }
+}
