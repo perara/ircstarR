@@ -1,9 +1,15 @@
 {
-  "server": "chat.freenode.net",
-  "port": 6667,
-  "channel": "",
-  "bot_nick": "anna",
-  "bot_admin": "hunter1",
+  "irc": {
+    "server": "chat.freenode.net",
+    "port": 6697,
+    "use_ssl": true,
+    "username": "",
+    "password": "",
+    "channel": "#someChannel",
+    "bot_nick": "anna",
+    "bot_owner": "hunter1",
+    "command_prefix": "."
+  },
   "logging": {
     "version": 1,
     "formatters": {
