@@ -3,10 +3,10 @@
     "server": "chat.freenode.net",
     "port": 6697,
     "use_ssl": true,
-    "username": "",
+    "username": "starrbotmaster",
     "password": "",
-    "channel": "#someChannel",
-    "bot_nick": "anna",
+    "channel": "#perogeinar",
+    "bot_nick": "starrbotmaster",
     "bot_owner": "hunter1",
     "command_prefix": "."
   },
