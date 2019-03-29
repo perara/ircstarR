@@ -59,10 +59,10 @@ class Bot(IRC):
             cmd = cmd[1:]  # Remove command prefix
             msg_obj.cmd = cmd  # Added the command sent by the user to the msg_obj
 
-            # Check if command has a function. If so command_handler is not the command function
-            command_handler = self.commands[cmd]
-            if command_handler:
-                #logger.debug(f"Command '{cmd}' has handler func '{command_handler.__name__}'")
+            # Check if command has a function. If so command_handler is the command function
+            try:
+                command_handler = self.commands[cmd]
+                logger.debug(f"Command '{cmd}' has handler func '{command_handler.__name__}'")
                 msg_obj.cmd_args = args  # Every thing after <cmd prefix><cmd> is considered cmd arguments
                 # Hack to reply to private messages
                 if not msg_obj.channel.startswith("#"):
@@ -73,10 +73,11 @@ class Bot(IRC):
                 if command_handler.is_function:
                     command_handler(msg=msg_obj, bot=self)
                 else:
-                    command_handler.input(msg=msg_obj, bot=self)
+                    command_handler.cmd(msg=msg_obj, bot=self)
 
-            else:
+            except KeyError as ke:
                 # Received an unknown command
+                logger.debug("Unknown command %s", ke)
                 self.send_msg(f"Unknown command. No command handlers for '{self.command_prefix + cmd}'",
                               target=msg_obj.channel)
 
