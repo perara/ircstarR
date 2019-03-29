@@ -18,8 +18,12 @@ for module in modules:
     for fn_name, fn in functions_list:
         spec = inspect.getfullargspec(fn)
 
-        print(f"Loaded command '{fn_name.lower()}'")
-        __commands__[fn_name.lower()] = fn() if inspect.isclass(fn) else fn
+        if hasattr(fn, "name"):
+            __commands__[fn.name.lower()] = fn() if inspect.isclass(fn) else fn
+            print(f"Loaded command '{fn.name.lower()}'")
+        else:
+            __commands__[fn_name.lower()] = fn() if inspect.isclass(fn) else fn
+            print(f"Loaded command '{fn_name.lower()}'")
 
 
 def load():
