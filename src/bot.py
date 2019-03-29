@@ -4,7 +4,7 @@ import logging
 import re
 
 from src.irc import IRC
-from src import cmd_lookup
+from src import commands
 from src.abstraction.models import Message
 
 
@@ -15,6 +15,7 @@ class Bot(IRC):
     def __init__(self, config):
         super().__init__(**config["irc"])
         self.config = config
+        self.commands = commands.load()
 
     def run_forever(self):
         """ Run the IRC bot """
@@ -59,9 +60,9 @@ class Bot(IRC):
             msg_obj.cmd = cmd  # Added the command sent by the user to the msg_obj
 
             # Check if command has a function. If so command_handler is not the command function
-            command_handler = cmd_lookup(cmd)
+            command_handler = self.commands[cmd]
             if command_handler:
-                logger.debug(f"Command '{cmd}' has handler func '{command_handler.__name__}'")
+                #logger.debug(f"Command '{cmd}' has handler func '{command_handler.__name__}'")
                 msg_obj.cmd_args = args  # Every thing after <cmd prefix><cmd> is considered cmd arguments
                 # Hack to reply to private messages
                 if not msg_obj.channel.startswith("#"):
@@ -69,7 +70,11 @@ class Bot(IRC):
                     msg_obj.channel = f"{msg_obj.nick}"
 
                 # Execute the command function
-                command_handler(msg=msg_obj, bot=self)
+                if command_handler.is_function:
+                    command_handler(msg=msg_obj, bot=self)
+                else:
+                    command_handler.input(msg=msg_obj, bot=self)
+
             else:
                 # Received an unknown command
                 self.send_msg(f"Unknown command. No command handlers for '{self.command_prefix + cmd}'",
