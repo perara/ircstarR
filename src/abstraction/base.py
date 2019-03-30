@@ -1,3 +1,4 @@
+import functools
 from abc import ABC, abstractmethod
 import inspect
 
@@ -6,17 +7,32 @@ class IRCcmd:
     """ Command decorator """
 
     @staticmethod
-    def command(f):
+    def command(f=None, **kwargs):
         """ Decorator function """
 
-        if inspect.isclass(f):
-            f.is_function = False
-        else:
-            f.is_function = True
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            f = args[0]
 
-        f.__decorated__ = True
+            if "name" in kwargs:
+                print(f, "setting name to", kwargs["name"])
+                f.name = kwargs["name"]
+            else:
+                f.name = f.__name__
+                print(f, "has name", f.name)
+            f.is_function = not inspect.isclass(f)
+            f.__decorated__ = True
+
+            return f
+
+        if f is None:
+            return functools.partial(wrapper, **kwargs)
+
+        wrapper(f, kwargs)
         return f
 
+#f.is_function = not inspect.isclass(f)
+#f.__decorated__ = True
 
 class CommandIFace(ABC):
     """ Interface for class based commands """

@@ -6,31 +6,32 @@ import logging
 logger = logging.getLogger("ircstarr.gen_commands")
 
 
-@IRCcmd.command
-class Testing(CommandIFace):
+@IRCcmd.command(name="class_renamed")
+class ClassWithAStupidName(CommandIFace):
 
     def __init__(self):
         pass
 
     def cmd(self, msg, bot):
-        bot.send_msg("PIM PAM POM!", target=msg.channel)
-
-
-Testing.name = "testingName"  # Optional command name
+        bot.send_msg("Original Class is %s!. Was renamed to %s." % (str(type(self)), self.name), target=msg.channel)
 
 
 @IRCcmd.command
-class Test3(CommandIFace):
+class ClassNamed(CommandIFace):
 
     def cmd(self, msg, bot):
-        pass
+        bot.send_msg("This class was not renamed and is called: %s." % (str(type(self))), target=msg.channel)
 
 
 @IRCcmd.command
-def test_cmd1(msg, bot):
-    print(f"msg: {msg} - bot: {bot}")
+def fn_named(msg, bot):
+    bot.send_msg("Called fn_named (The default name function)", target=msg.channel)
 
-test_cmd1.name = "test_name"
+
+@IRCcmd.command(name="fn_renamed")
+def fn_with_a_stupid_name(msg, bot):
+    bot.send_msg("Called fn_renamed (NOT the default name function)", target=msg.channel)
+
 
 # @IRCcmd.command
 # def test_cmd2(msg, bot):

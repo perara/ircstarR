@@ -62,7 +62,8 @@ class Bot(IRC):
             # Check if command has a function. If so command_handler is the command function
             try:
                 command_handler = self.commands[cmd]
-                logger.debug(f"Command '{cmd}' has handler func '{command_handler.__name__}'")
+                print(command_handler)
+                logger.debug(f"Command '{cmd}' has handler func '{command_handler.name}'")
                 msg_obj.cmd_args = args  # Every thing after <cmd prefix><cmd> is considered cmd arguments
                 # Hack to reply to private messages
                 if not msg_obj.channel.startswith("#"):
