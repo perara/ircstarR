@@ -1,10 +1,13 @@
-import abc
+from abc import ABC, abstractmethod
 import inspect
 
-class IRC:
+
+class IRCcmd:
+    """ Command decorator """
 
     @staticmethod
     def command(f):
+        """ Decorator function """
 
         if inspect.isclass(f):
             f.is_function = False
@@ -15,7 +18,10 @@ class IRC:
         return f
 
 
-class BaseIFace(abc.ABC):
+class CommandIFace(ABC):
+    """ Interface for class based commands """
 
-    def input(self, msg, bot):
+    @abstractmethod
+    def cmd(self, msg, bot):
+        """ All class based commands must implement 'cmd' func """
         raise NotImplementedError("You must implement this!")
